@@ -14,7 +14,8 @@ class MartController extends Controller
      */
     public function index()
     {
-        return view('mart.index');
+        $marts = Mart::all();
+        return view('mart.index',compact('marts'));
     }
 
     /**
@@ -24,7 +25,7 @@ class MartController extends Controller
      */
     public function create()
     {
-        //
+        return view('mart.create');
     }
 
     /**
@@ -35,7 +36,17 @@ class MartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'=> 'required',
+            'description'=> 'required',
+        ]);
+        $mart = new Mart();
+        $mart->name = $request->name;
+        $mart->description = $request->description;
+        $save = $mart->save();
+        if($save){
+            return redirect()->back()->with('message','Added Successfully');
+        }
     }
 
     /**

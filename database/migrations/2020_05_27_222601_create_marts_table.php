@@ -15,6 +15,8 @@ class CreateMartsTable extends Migration
     {
         Schema::create('marts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name');
+            $table->text('description');
             $table->timestamps();
         });
     }

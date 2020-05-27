@@ -20,6 +20,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
-    Route::resource('/mart','MartController');
+Route::group(['middleware' => ['auth'], 'prefix' => 'admin/'], function () {
+    Route::resource('mart','MartController');
 });

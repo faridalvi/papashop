@@ -38,7 +38,7 @@ class MartController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=> 'required',
+            'name'=> 'required|unique:marts',
             'description'=> 'required',
         ]);
         $mart = new Mart();
@@ -90,6 +90,7 @@ class MartController extends Controller
         $mart =  Mart::find($mart->id);;
         $mart->name = $request->name;
         $mart->description = $request->description;
+        $mart->qrcode = str_slug($request->name,'-');
         $save = $mart->save();
         if($save){
             return redirect()->route('mart.index')->with('message','Updated Successfully');

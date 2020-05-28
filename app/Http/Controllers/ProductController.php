@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Mart;
+use App\Product;
 use Illuminate\Http\Request;
 
-class MartController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,9 @@ class MartController extends Controller
      */
     public function index()
     {
-        $marts = Mart::all();
-        return view('mart.index',compact('marts'));
+        $mart = Mart::all();
+        $products = Product::all();
+        return view('product.index',compact('products','mart'));
     }
 
     /**
@@ -25,7 +27,8 @@ class MartController extends Controller
      */
     public function create()
     {
-        return view('mart.create');
+        $marts = Mart::all();
+        return view('product.create',compact('marts'));
     }
 
     /**
@@ -39,11 +42,13 @@ class MartController extends Controller
         $request->validate([
             'name'=> 'required',
             'description'=> 'required',
+            'mart'=> 'required',
         ]);
-        $mart = new Mart();
-        $mart->name = $request->name;
-        $mart->description = $request->description;
-        $save = $mart->save();
+        $product = new Product();
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $save = $product->save();
+        $product->marts()->sync($request->mart);
         if($save){
             return redirect()->back()->with('message','Added Successfully');
         }
@@ -52,57 +57,60 @@ class MartController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Mart  $mart
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Mart $mart)
+    public function show(Product $product)
     {
-       //
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Mart  $mart
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mart $mart)
+    public function edit(Product $product)
     {
-        $mart = Mart::where('id','=',$mart->id)->first();
-        return view('mart.edit',compact('mart'));
+        $marts = Mart::all();
+        $product = Product::where('id','=',$product->id)->first();
+        return view('product.edit',compact('marts','product'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Mart  $mart
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mart $mart)
+    public function update(Request $request, Product $product)
     {
         $request->validate([
             'name'=> 'required',
             'description'=> 'required',
+            'mart'=> 'required',
         ]);
-        $mart =  Mart::find($mart->id);;
-        $mart->name = $request->name;
-        $mart->description = $request->description;
-        $save = $mart->save();
+        $product = Product::find($product->id);
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->marts()->sync($request->mart);
+        $save = $product->save();
         if($save){
-            return redirect()->route('mart.index')->with('message','Updated Successfully');
+            return redirect()->route('product.index')->with('message','Updated Successfully');
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Mart  $mart
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Mart $mart)
+    public function destroy(Product $product)
     {
-        $destroy = Mart::destroy($mart->id);
+        $destroy = Product::destroy($product->id);
         if($destroy){
             return redirect()->back()->with('message','Deleted Successfully');
         }

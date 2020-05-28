@@ -7,16 +7,30 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Dashboard
                 </a>
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"
-                   aria-expanded="false" aria-controls="collapseLayouts">
+                {{--Mart--}}
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMart"
+                   aria-expanded="false" aria-controls="collapseMart">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Mart
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                <div class="collapse" id="collapseMart" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="{{route('mart.index')}}">Show All</a>
                         <a class="nav-link" href="{{route('mart.create')}}">Add</a>
+                    </nav>
+                </div>
+                {{--Product--}}
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct"
+                   aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Product
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseProduct" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{{route('product.index')}}">Show All</a>
+                        <a class="nav-link" href="{{route('product.create')}}">Add</a>
                     </nav>
                 </div>
             </div>

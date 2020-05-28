@@ -14,6 +14,7 @@
                                 <tr>
                                     <th>SN #</th>
                                     <th>Name</th>
+                                    <th>Mart Name</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -21,17 +22,23 @@
                                 <tr>
                                     <th>SN #</th>
                                     <th>Name</th>
+                                    <th>Mart Name</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
                             <tbody>
-                                @foreach($marts as $mart)
+                                @foreach($products as $product)
                                     <tr>
                                         <td>{{$loop->index + 1}}</td>
-                                        <td>{{$mart->name}}</td>
+                                        <td>{{$product->name}}</td>
                                         <td>
-                                            <a href="{{route('mart.edit',$mart->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
-                                            <form style="display: inline" onsubmit="return confirm('Do you really want to delete?');" action="{{ route('mart.destroy',$mart->id) }}" method="POST" >
+                                            @foreach($product->marts as $productMarts)
+                                                {{$productMarts->name}}
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            <a href="{{route('product.edit',$product->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                            <form style="display: inline" onsubmit="return confirm('Do you really want to delete?');" action="{{ route('product.destroy',$product->id) }}" method="POST" >
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="btn btn-sm btn-danger "><i class="fa fa-trash"></i></button>

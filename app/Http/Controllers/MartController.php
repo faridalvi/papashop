@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mart;
+use BaconQrCode\Encoder\QrCode;
 use Illuminate\Http\Request;
 
 class MartController extends Controller
@@ -43,6 +44,7 @@ class MartController extends Controller
         $mart = new Mart();
         $mart->name = $request->name;
         $mart->description = $request->description;
+        $mart->qrcode = str_slug($request->name,'-');
         $save = $mart->save();
         if($save){
             return redirect()->back()->with('message','Added Successfully');

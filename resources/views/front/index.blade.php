@@ -5,9 +5,10 @@
         <div class="row">
             @foreach($marts as $mart)
                 <div class="col-md-3 col-sm-4">
-                    <h3>{{$mart->name}}</h3>
+                    {!! QrCode::size(250)->generate($mart->qrcode); !!}
                 </div>
             @endforeach
+
         </div>
     </div>
 @endsection

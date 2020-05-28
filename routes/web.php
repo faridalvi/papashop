@@ -16,7 +16,19 @@
 //    return view('front.index');
 //})->name('front');
 
+
+
 Route::get('/','FrontController@index')->name('front');
+
+
+Route::get('qr-code-g', function () {
+    \QrCode::size(500)
+        ->format('png')
+        ->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
+
+    return view('qrCode');
+
+});
 
 Auth::routes();
 

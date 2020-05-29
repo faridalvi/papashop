@@ -28,10 +28,10 @@
                     <option value="0" disabled>Please Select</option>
                     @foreach($marts as $mart)
                         <option value="{{$mart->id}}"
-                            @foreach($product->marts as $productMarts)
+                                @foreach($product->marts as $productMarts)
                                 @if($productMarts->id == $mart->id)
-                                    selected
-                                @endif
+                                selected
+                            @endif
                             @endforeach
                         >{{$mart->name}}</option>
                     @endforeach

@@ -37,12 +37,16 @@
                                             @endforeach
                                         </td>
                                         <td>
-                                            <a href="{{route('product.edit',$product->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
-                                            <form style="display: inline" onsubmit="return confirm('Do you really want to delete?');" action="{{ route('product.destroy',$product->id) }}" method="POST" >
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" class="btn btn-sm btn-danger "><i class="fa fa-trash"></i></button>
-                                            </form>
+                                            @can('product-edit')
+                                                <a href="{{route('product.edit',$product->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                            @endcan
+                                            @can('product-delete')
+                                                <form style="display: inline" onsubmit="return confirm('Do you really want to delete?');" action="{{ route('product.destroy',$product->id) }}" method="POST" >
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-sm btn-danger "><i class="fa fa-trash"></i></button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

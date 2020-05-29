@@ -33,6 +33,19 @@
                         <a class="nav-link" href="{{route('product.create')}}">Add</a>
                     </nav>
                 </div>
+                {{--User--}}
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#User"
+                   aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Usrers
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="User" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{{route('users.index')}}">Show All</a>
+                        <a class="nav-link" href="{{route('users.create')}}">Add</a>
+                    </nav>
+                </div>
             </div>
         </div>
         <div class="sb-sidenav-footer">

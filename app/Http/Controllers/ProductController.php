@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mart;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -22,9 +23,17 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $mart = Mart::all();
-        $products = Product::all();
-        return view('product.index',compact('products','mart'));
+        $is_admin =Auth::user()->roles()->where('name', 'Admin')->exists();
+        if($is_admin) {
+            $mart = Mart::all();
+            $products = Product::all();
+            return view('product.index', compact('products', 'mart'));
+        }
+        else{
+            $mart = Mart::all();
+            $products = Product::where('user_id','=',Auth::user()->id)->get();
+            return view('product.index', compact('products', 'mart'));
+        }
     }
 
     /**
@@ -54,6 +63,7 @@ class ProductController extends Controller
         $product = new Product();
         $product->name = $request->name;
         $product->description = $request->description;
+        $product->user_id = Auth::user()->id;
         $save = $product->save();
         $product->marts()->sync($request->mart);
         if($save){
@@ -80,9 +90,21 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $marts = Mart::all();
-        $product = Product::where('id','=',$product->id)->first();
-        return view('product.edit',compact('marts','product'));
+        $is_admin =Auth::user()->roles()->where('name', 'Admin')->exists();
+        if($is_admin){
+            $marts = Mart::all();
+            $product = Product::where('id','=',$product->id)->first();
+            return view('product.edit',compact('marts','product'));
+        }
+        else if(Auth::user()->id == $product->user_id){
+            $marts = Mart::all();
+            $product = Product::where('id','=',$product->id)->first();
+            return view('product.edit',compact('marts','product'));
+        }
+        else{
+            return redirect()->back()->with('error','You are not Authorized');
+        }
+
     }
 
     /**
@@ -102,6 +124,7 @@ class ProductController extends Controller
         $product = Product::find($product->id);
         $product->name = $request->name;
         $product->description = $request->description;
+        $product->user_id = Auth::user()->id;
         $product->marts()->sync($request->mart);
         $save = $product->save();
         if($save){
@@ -117,9 +140,21 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $destroy = Product::destroy($product->id);
-        if($destroy){
-            return redirect()->back()->with('message','Deleted Successfully');
+        $is_admin =Auth::user()->roles()->where('name', 'Admin')->exists();
+        if($is_admin) {
+            $destroy = Product::destroy($product->id);
+            if ($destroy) {
+                return redirect()->back()->with('message', 'Deleted Successfully');
+            }
+        }
+        else if(Auth::user()->id == $product->user_id){
+            $destroy = Product::destroy($product->id);
+            if ($destroy) {
+                return redirect()->back()->with('message', 'Deleted Successfully');
+            }
+        }
+        else{
+            return redirect()->back()->with('error','You are not Authorized');
         }
     }
 }

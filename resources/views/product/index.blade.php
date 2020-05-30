@@ -6,6 +6,9 @@
             @if(Session::has('message'))
                 <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
             @endif
+                @if(Session::has('error'))
+                    <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('error') }}</p>
+                @endif
 {{--            <div class="card-header"><i class="fas fa-table mr-1"></i>All Marts</div>--}}
                 <div class="card-body">
                     <div class="table-responsive">

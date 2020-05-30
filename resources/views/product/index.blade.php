@@ -15,7 +15,9 @@
                                     <th>SN #</th>
                                     <th>Name</th>
                                     <th>Mart Name</th>
+                                    @if(Auth::user()->can('product-edit') || Auth::user()->can('product-delete'))
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tfoot>
@@ -23,7 +25,9 @@
                                     <th>SN #</th>
                                     <th>Name</th>
                                     <th>Mart Name</th>
+                                    @if(Auth::user()->can('product-edit') || Auth::user()->can('product-delete'))
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -36,6 +40,7 @@
                                                 {{$productMarts->name}}
                                             @endforeach
                                         </td>
+                                        @if(Auth::user()->can('product-edit') || Auth::user()->can('product-delete'))
                                         <td>
                                             @can('product-edit')
                                                 <a href="{{route('product.edit',$product->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
@@ -48,6 +53,7 @@
                                                 </form>
                                             @endcan
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

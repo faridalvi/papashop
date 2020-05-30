@@ -23,7 +23,9 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Roles</th>
+                @if(Auth::user()->can('user-edit') || Auth::user()->can('user-delete'))
                 <th width="280px">Action</th>
+                @endif
             </tr>
             @foreach ($data as $key => $user)
                 <tr>
@@ -37,15 +39,21 @@
                             @endforeach
                         @endif
                     </td>
+                    @if(Auth::user()->can('user-edit') || Auth::user()->can('user-delete'))
                     <td>
-                        <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
-                        <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
+                        @can('user-edit')
+                        <a class="btn btn-sm btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
+                        @endcan
+                        <a class="btn btn-sm btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
+                        @can('user-delete')
                         <form style="display: inline" onsubmit="return confirm('Do you really want to delete?');" action="{{ route('users.destroy',$user->id) }}" method="POST" >
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-sm btn-danger "><i class="fa fa-trash"></i></button>
                         </form>
+                        @endcan
                     </td>
+                    @endif
                 </tr>
             @endforeach
         </table>

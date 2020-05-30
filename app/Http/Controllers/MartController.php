@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Mart;
 use BaconQrCode\Encoder\QrCode;
 use Illuminate\Http\Request;
-
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 class MartController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:mart-list|mart-create|mart-edit|mart-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:mart-create', ['only' => ['create','store']]);
+        $this->middleware('permission:mart-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:mart-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *

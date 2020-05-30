@@ -14,14 +14,18 @@
                                 <tr>
                                     <th>SN #</th>
                                     <th>Name</th>
-                                    <th>Action</th>
+                                    @if(Auth::user()->can('mart-edit') || Auth::user()->can('mart-delete'))
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th>SN #</th>
                                     <th>Name</th>
+                                    @if(Auth::user()->can('mart-edit') || Auth::user()->can('mart-delete'))
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -29,14 +33,20 @@
                                     <tr>
                                         <td>{{$loop->index + 1}}</td>
                                         <td>{{$mart->name}}</td>
+                                        @if(Auth::user()->can('mart-edit') || Auth::user()->can('mart-delete'))
                                         <td>
+                                            @can('mart-edit')
                                             <a href="{{route('mart.edit',$mart->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                            @endcan
+                                            @can('mart-delete')
                                             <form style="display: inline" onsubmit="return confirm('Do you really want to delete?');" action="{{ route('mart.destroy',$mart->id) }}" method="POST" >
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="btn btn-sm btn-danger "><i class="fa fa-trash"></i></button>
                                             </form>
+                                            @endcan
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

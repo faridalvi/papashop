@@ -14,6 +14,7 @@
                                 <tr>
                                     <th>SN #</th>
                                     <th>Name</th>
+                                    <th>Qr Code</th>
                                     @if(Auth::user()->can('mart-edit') || Auth::user()->can('mart-delete'))
                                         <th>Action</th>
                                     @endif
@@ -23,6 +24,7 @@
                                 <tr>
                                     <th>SN #</th>
                                     <th>Name</th>
+                                    <th>Qr Code</th>
                                     @if(Auth::user()->can('mart-edit') || Auth::user()->can('mart-delete'))
                                     <th>Action</th>
                                     @endif
@@ -33,6 +35,7 @@
                                     <tr>
                                         <td>{{$loop->index + 1}}</td>
                                         <td>{{$mart->name}}</td>
+                                        <td>{{$mart->qrcode}}</td>
                                         @if(Auth::user()->can('mart-edit') || Auth::user()->can('mart-delete'))
                                         <td>
                                             @can('mart-edit')

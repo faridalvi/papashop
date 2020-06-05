@@ -18,6 +18,7 @@ class CreateMartsTable extends Migration
             $table->string('name');
             $table->string('qrcode')->nullable();
             $table->text('description');
+            $table->integer('user_id')->default(1);
             $table->timestamps();
         });
     }

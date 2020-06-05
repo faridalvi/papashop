@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mart;
 use BaconQrCode\Encoder\QrCode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 class MartController extends Controller
@@ -23,8 +24,15 @@ class MartController extends Controller
      */
     public function index()
     {
-        $marts = Mart::all();
-        return view('mart.index',compact('marts'));
+        $is_admin =Auth::user()->roles()->where('name', 'Admin')->exists();
+        if($is_admin) {
+            $marts = Mart::all();
+            return view('mart.index', compact('marts'));
+        }
+        else{
+            $marts = Mart::where('user_id','=',Auth::user()->id)->get();
+            return view('mart.index', compact('marts'));
+        }
     }
 
     /**
@@ -53,6 +61,7 @@ class MartController extends Controller
         $mart->name = $request->name;
         $mart->description = $request->description;
         $mart->qrcode = str_slug($request->name,'-');
+        $mart->user_id = Auth::user()->id;
         $save = $mart->save();
         if($save){
             return redirect()->back()->with('message','Added Successfully');
@@ -78,8 +87,18 @@ class MartController extends Controller
      */
     public function edit(Mart $mart)
     {
-        $mart = Mart::where('id','=',$mart->id)->first();
-        return view('mart.edit',compact('mart'));
+        $is_admin =Auth::user()->roles()->where('name', 'Admin')->exists();
+        if($is_admin) {
+            $mart = Mart::where('id', '=', $mart->id)->first();
+            return view('mart.edit', compact('mart'));
+        }
+        else if(Auth::user()->id == $mart->user_id){
+            $mart = Mart::where('id', '=', $mart->id)->first();
+            return view('mart.edit', compact('mart'));
+        }
+        else{
+            return redirect()->back()->with('error','You are not Authorized');
+        }
     }
 
     /**
@@ -99,6 +118,7 @@ class MartController extends Controller
         $mart->name = $request->name;
         $mart->description = $request->description;
         $mart->qrcode = str_slug($request->name,'-');
+        $mart->user_id = Auth::user()->id;
         $save = $mart->save();
         if($save){
             return redirect()->route('mart.index')->with('message','Updated Successfully');
@@ -113,9 +133,22 @@ class MartController extends Controller
      */
     public function destroy(Mart $mart)
     {
-        $destroy = Mart::destroy($mart->id);
-        if($destroy){
-            return redirect()->back()->with('message','Deleted Successfully');
+        $is_admin =Auth::user()->roles()->where('name', 'Admin')->exists();
+        if($is_admin){
+            $destroy = Mart::destroy($mart->id);
+            if($destroy){
+                return redirect()->back()->with('message','Deleted Successfully');
+            }
         }
+        else if(Auth::user()->id == $mart->user_id){
+            $destroy = Mart::destroy($mart->id);
+            if($destroy){
+                return redirect()->back()->with('message','Deleted Successfully');
+            }
+        }
+        else{
+            return redirect()->back()->with('error','You are not Authorized');
+        }
+
     }
 }

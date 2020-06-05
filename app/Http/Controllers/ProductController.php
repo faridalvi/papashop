@@ -30,7 +30,7 @@ class ProductController extends Controller
             return view('product.index', compact('products', 'mart'));
         }
         else{
-            $mart = Mart::all();
+            $mart = Mart::where('user_id','=',Auth::user()->id)->get();
             $products = Product::where('user_id','=',Auth::user()->id)->get();
             return view('product.index', compact('products', 'mart'));
         }
@@ -43,8 +43,15 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $marts = Mart::all();
-        return view('product.create',compact('marts'));
+        $is_admin =Auth::user()->roles()->where('name', 'Admin')->exists();
+        if($is_admin) {
+            $marts = Mart::all();
+            return view('product.create', compact('marts'));
+        }
+        else{
+            $marts = Mart::where('user_id','=',Auth::user()->id)->get();
+            return view('product.create', compact('marts'));
+        }
     }
 
     /**
@@ -56,7 +63,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=> 'required',
+            'name'=> 'required|unique:marts',
             'description'=> 'required',
             'mart'=> 'required',
         ]);
@@ -97,7 +104,7 @@ class ProductController extends Controller
             return view('product.edit',compact('marts','product'));
         }
         else if(Auth::user()->id == $product->user_id){
-            $marts = Mart::all();
+            $marts = Mart::where('user_id','=',Auth::user()->id)->get();
             $product = Product::where('id','=',$product->id)->first();
             return view('product.edit',compact('marts','product'));
         }

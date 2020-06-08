@@ -18,6 +18,7 @@
                                     <th>SN #</th>
                                     <th>Name</th>
                                     <th>Mart Name</th>
+                                    <th>Image</th>
                                     @if(Auth::user()->can('product-edit') || Auth::user()->can('product-delete'))
                                     <th>Action</th>
                                     @endif
@@ -28,6 +29,7 @@
                                     <th>SN #</th>
                                     <th>Name</th>
                                     <th>Mart Name</th>
+                                    <th>Image</th>
                                     @if(Auth::user()->can('product-edit') || Auth::user()->can('product-delete'))
                                     <th>Action</th>
                                     @endif
@@ -42,6 +44,9 @@
                                             @foreach($product->marts as $productMarts)
                                                 {{$productMarts->name}}
                                             @endforeach
+                                        </td>
+                                        <td>
+                                            <img src="{{asset('public/storage/image/'.$product->image)}}" height="50px" width="50px">
                                         </td>
                                         @if(Auth::user()->can('product-edit') || Auth::user()->can('product-delete'))
                                         <td>

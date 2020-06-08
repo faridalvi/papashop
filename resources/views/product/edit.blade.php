@@ -15,7 +15,7 @@
             <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
         @endif
 
-        <form action="{{route('product.update',$product->id)}}" method="post">
+        <form action="{{route('product.update',$product->id)}}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -36,6 +36,16 @@
                         >{{$mart->name}}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-6">
+                    <label>Upload Image</label>
+                    <input type="file" name="image" class="form-control">
+                </div>
+                <div class="col-sm-6">
+                    <label>Price</label>
+                    <input type="text" name="price" class="form-control" value="{{$product->price}}">
+                </div>
             </div>
             <div class="form-group">
                 <label>Description</label>

@@ -33,6 +33,7 @@ Route::get('qr-code-g', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('mart-products/{qrcode}','FrontController@products')->name('mart-products');
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin/'], function () {
     Route::resource('mart','MartController');

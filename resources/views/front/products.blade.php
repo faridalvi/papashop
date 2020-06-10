@@ -14,7 +14,7 @@
                                     <p class="card-text">
                                         {{$product->description}}
                                     </p>
-                                    <a href="#" class="btn btn-primary btn-sm">Buy Now</a>
+                                    <a href="{{route('create-customer',$product->id)}}" class="btn btn-primary btn-sm">Buy Now</a>
                                 </div>
                             </div>
                         @endforeach
